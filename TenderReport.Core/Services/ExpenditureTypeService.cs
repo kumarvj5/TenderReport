@@ -23,6 +23,8 @@ namespace TenderReport.Core.Services
         public async Task CreateExpenditure(CodesCreateDTO ExpendituresDTO)
         {
             var entity = _mapper.Map<ExpenditureType>(ExpendituresDTO);
+            entity.Code = TenderHelperService.ToTitleCase(entity.Code);
+            entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateExpenditure(entity);
         }
 
@@ -40,6 +42,7 @@ namespace TenderReport.Core.Services
         public async Task UpdateExpenditure(string ExpenditureCode, CodesCreateDTO ExpendituresDTO)
         {
             var entity = _mapper.Map<ExpenditureType>(ExpendituresDTO);
+            entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.UpdateExpenditure(ExpenditureCode, entity);
         }
     }

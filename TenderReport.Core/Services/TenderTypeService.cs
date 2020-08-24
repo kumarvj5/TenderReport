@@ -22,6 +22,8 @@ namespace TenderReport.Core.Services
         public async Task CreateTender(CodesCreateDTO tendersDTO)
         {
             var entity = _mapper.Map<TenderType>(tendersDTO);
+            entity.Code = TenderHelperService.ToTitleCase(entity.Code);
+            entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateTender(entity);
         }
 
@@ -39,6 +41,7 @@ namespace TenderReport.Core.Services
         public async Task UpdateTender(string tenderCode, CodesCreateDTO tendersDTO)
         {
             var entity = _mapper.Map<TenderType>(tendersDTO);
+            entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.UpdateTender(tenderCode, entity);
         }
     }

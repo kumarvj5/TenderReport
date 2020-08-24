@@ -23,6 +23,7 @@ namespace TenderReport.Core.Services
         public async Task CreateTenderReport(ReportCreateDTO reportCreateDTO)
         {
             var entity = _mapper.Map<Data.Entities.TenderReport>(reportCreateDTO);
+            entity.ParticularName = TenderHelperService.ToTitleCase(entity.ParticularName);
             await _repository.CreateTenderReport(entity);
         }
 
@@ -31,13 +32,14 @@ namespace TenderReport.Core.Services
             await _repository.DeleteTenderReport(templateReportId);
         }
 
-        public async Task<List<ReportViewDTO>> GetAllTenderReports(string tenderType)
+        public async Task<ReportView> GetAllTenderReports(string tenderType)
         {
+            var reportView = new ReportView();
             var tender = await _repository.GetTende(tenderType);
             var tenderReportList = await _repository.GetAllTenderReports(tenderType);
-            var reportsList = _mapper.Map<List<ReportViewDTO>>(tenderReportList);
-            reportsList.ForEach(c => c.TenderAmount = tender[0].Amount);
-            return reportsList;
+            reportView.Reports = _mapper.Map<List<ReportViewDTO>>(tenderReportList);
+            reportView.TenderAmount = tender[0].Amount;
+            return reportView;
         }
 
         public async Task<OverallDTO> GetOverallTenderReports(string tenderType)
@@ -65,23 +67,25 @@ namespace TenderReport.Core.Services
             return overall;
         }
 
-        public async Task<List<SplitReportsDTO>> GetSplitTenderReports(string tenderType)
+        public async Task<SplitReports> GetSplitTenderReports(string tenderType)
         {
+            var splitReports = new SplitReports();
             var tender = await _repository.GetTende(tenderType);
             var tenderReportList = await _repository.GetAllTenderReports(tenderType);
-            var splitTenderReportsList = new List<SplitReportsDTO>();
             var groupedList = tenderReportList.GroupBy(c => c.ExpenditureType).ToDictionary(c=>c.Key, k=>k.ToList());
 
+            splitReports.TenderAmount = tender[0].Amount;
             foreach (var group in groupedList)
             {
-                splitTenderReportsList.Add(new SplitReportsDTO { ExpenditureType = group.Key, Reports = _mapper.Map<List<ReportViewDTO>>(group.Value), Count= group.Value.Count(), Amount= group.Value.Sum(c=>c.Amount), TenderAmount=tender[0].Amount });
+                splitReports.Reports.Add(new SplitReportsDTO { ExpenditureType = group.Key, Reports = _mapper.Map<List<ReportViewDTO>>(group.Value), Count= group.Value.Count(), Amount= group.Value.Sum(c=>c.Amount) });
             }
-            return splitTenderReportsList;
+            return splitReports;
         }
 
         public async Task UpdateTenderReport(Guid templateReportId, ReportCreateDTO reportCreateDTO)
         {
             var entity = _mapper.Map<Data.Entities.TenderReport>(reportCreateDTO);
+            entity.ParticularName = TenderHelperService.ToTitleCase(entity.ParticularName);
             await _repository.UpdateTenderReport(templateReportId,entity);
         }
     }

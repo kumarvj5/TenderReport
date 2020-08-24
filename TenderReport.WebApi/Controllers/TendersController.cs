@@ -22,13 +22,13 @@ namespace TenderReport.WebApi.Controllers
         }
         // GET: api/Tenders
         [HttpGet("{tenderType}")]
-        public async Task<ActionResult<IEnumerable<ReportViewDTO>>> GetAllTenderReports(string tenderType)
+        public async Task<ActionResult<ReportView>> GetAllTenderReports(string tenderType)
         {
             return Ok(await _tenderService.GetAllTenderReports(tenderType));
         }
 
         [HttpGet("{tenderType}/split")]
-        public async Task<ActionResult<IEnumerable<SplitReportsDTO>>> GetSplitTenderReports(string tenderType)
+        public async Task<ActionResult<SplitReports>> GetSplitTenderReports(string tenderType)
         {
             return Ok(await _tenderService.GetSplitTenderReports(tenderType));
         }
