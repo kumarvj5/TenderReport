@@ -30,6 +30,9 @@ namespace TenderReport.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateExpenditure([FromBody] CodesCreateDTO ExpendituresCreateDTO)
         {
+            if (await _ExpenditureTypeService.ExpenditureExists(ExpendituresCreateDTO.Code))
+                return BadRequest(ExpendituresCreateDTO.Code + " already exists, try with another name");
+
             await _ExpenditureTypeService.CreateExpenditure(ExpendituresCreateDTO);
             return StatusCode(201);
         }

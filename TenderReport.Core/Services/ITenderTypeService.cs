@@ -12,5 +12,6 @@ namespace TenderReport.Core.Services
         Task CreateTender(CodesCreateDTO tendersDTO);
         Task UpdateTender(string tenderCode, CodesCreateDTO tendersDTO);
         Task DeleteTender(string tenderCode);
+        Task<bool> TenderExists (string tenderCode);
     }
 }

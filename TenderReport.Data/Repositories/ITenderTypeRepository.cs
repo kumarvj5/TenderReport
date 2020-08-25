@@ -12,5 +12,7 @@ namespace TenderReport.Data.Repositories
         Task DeleteTender(string tenderCode);
         Task<List<TenderType>> GetAllTenders();
         Task UpdateTender(string tenderCode, TenderType tender);
+        Task<bool> TenderExists(string tenderCode);
+
     }
 }

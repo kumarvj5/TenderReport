@@ -23,7 +23,7 @@ namespace TenderReport.Core.Services
         public async Task CreateTender(CodesCreateDTO tendersDTO)
         {
             var entity = _mapper.Map<TenderType>(tendersDTO);
-            Regex.Replace(entity.Code, @"\s+", "");
+            entity.Code = Regex.Replace(entity.Code, @"\s+", "");
             entity.Code = entity.Code.ToUpper();
             entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateTender(entity);
@@ -38,6 +38,12 @@ namespace TenderReport.Core.Services
         {
             var tendersList = await _repository.GetAllTenders();
             return _mapper.Map<List<CodesViewDTO>>(tendersList);
+        }
+
+        public async Task<bool> TenderExists(string tenderCode)
+        {
+            tenderCode = Regex.Replace(tenderCode, @"\s+", "");
+            return await _repository.TenderExists(tenderCode.ToUpper());
         }
 
         public async Task UpdateTender(string tenderCode, CodesCreateDTO tendersDTO)

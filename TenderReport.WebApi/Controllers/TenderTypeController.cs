@@ -30,6 +30,9 @@ namespace TenderReport.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTender([FromBody] CodesCreateDTO tendersCreateDTO)
         {
+            if (await _tenderTypeService.TenderExists(tendersCreateDTO.Code))
+                return BadRequest(tendersCreateDTO.Code + " already exists try with another name");
+            
             await _tenderTypeService.CreateTender(tendersCreateDTO);
             return StatusCode(201);
         }

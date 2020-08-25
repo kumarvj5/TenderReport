@@ -12,5 +12,7 @@ namespace TenderReport.Data.Repositories
         Task DeleteExpenditure(string ExpenditureCode);
         Task<List<ExpenditureType>> GetAllExpenditures();
         Task UpdateExpenditure(string ExpenditureCode, ExpenditureType Expenditure);
+        Task<bool> ExpenditureExists(string code);
+
     }
 }

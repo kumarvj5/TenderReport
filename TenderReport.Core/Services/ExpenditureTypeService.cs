@@ -24,7 +24,7 @@ namespace TenderReport.Core.Services
         public async Task CreateExpenditure(CodesCreateDTO ExpendituresDTO)
         {
             var entity = _mapper.Map<ExpenditureType>(ExpendituresDTO);
-            Regex.Replace(entity.Code, @"\s+", "");
+            entity.Code = Regex.Replace(entity.Code, @"\s+", "");
             entity.Code = TenderHelperService.ToTitleCase(entity.Code);
             entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateExpenditure(entity);
@@ -33,6 +33,12 @@ namespace TenderReport.Core.Services
         public async Task DeleteExpenditure(string ExpenditureCode)
         {
             await _repository.DeleteExpenditure(ExpenditureCode);
+        }
+
+        public async Task<bool> ExpenditureExists(string code)
+        {
+            code = Regex.Replace(code, @"\s+", "");
+            return await _repository.ExpenditureExists(TenderHelperService.ToTitleCase(code));
         }
 
         public async Task<List<CodesViewDTO>> GetAllExpenditures()

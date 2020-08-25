@@ -30,6 +30,11 @@ namespace TenderReport.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> ExpenditureExists(string code)
+        {
+            return await _context.ExpenditureType.AnyAsync(c => c.Code.Equals(code));
+        }
+
         public async Task<List<ExpenditureType>> GetAllExpenditures()
         {
             return await _context.ExpenditureType.Where(c => c.IsDeleted != true).ToListAsync();

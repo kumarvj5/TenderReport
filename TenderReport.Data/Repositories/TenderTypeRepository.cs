@@ -35,6 +35,11 @@ namespace TenderReport.Data.Repositories
             return await _context.TenderType.Where(c=>c.IsDeleted!= true).ToListAsync();
         }
 
+        public async Task<bool> TenderExists(string tenderCode)
+        {
+            return await _context.TenderType.AnyAsync(c => c.Code.Equals(tenderCode));
+        }
+
         public async Task UpdateTender(string tenderCode, TenderType tender)
         {
             var tenderFromDB = await _context.TenderType.FirstOrDefaultAsync(c => c.Code.Equals(tenderCode));

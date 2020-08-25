@@ -12,5 +12,6 @@ namespace TenderReport.Core.Services
         Task CreateExpenditure(CodesCreateDTO ExpendituresDTO);
         Task UpdateExpenditure(string ExpenditureCode, CodesCreateDTO ExpendituresDTO);
         Task DeleteExpenditure(string ExpenditureCode);
+        Task<bool> ExpenditureExists(string code);
     }
 }
