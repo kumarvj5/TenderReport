@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TenderReport.Core.Models;
 using TenderReport.Data.Entities;
 using TenderReport.Data.Repositories;
+using System.Text.RegularExpressions;
 
 namespace TenderReport.Core.Services
 {
@@ -23,6 +24,7 @@ namespace TenderReport.Core.Services
         public async Task CreateExpenditure(CodesCreateDTO ExpendituresDTO)
         {
             var entity = _mapper.Map<ExpenditureType>(ExpendituresDTO);
+            Regex.Replace(entity.Code, @"\s+", "");
             entity.Code = TenderHelperService.ToTitleCase(entity.Code);
             entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateExpenditure(entity);

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TenderReport.Core.Models;
 using TenderReport.Data.Entities;
@@ -22,7 +23,8 @@ namespace TenderReport.Core.Services
         public async Task CreateTender(CodesCreateDTO tendersDTO)
         {
             var entity = _mapper.Map<TenderType>(tendersDTO);
-            entity.Code = TenderHelperService.ToTitleCase(entity.Code);
+            Regex.Replace(entity.Code, @"\s+", "");
+            entity.Code = entity.Code.ToUpper();
             entity.ShortName = TenderHelperService.ToTitleCase(entity.ShortName);
             await _repository.CreateTender(entity);
         }
