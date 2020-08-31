@@ -7,11 +7,6 @@ namespace TenderReport.Data.Entities
 {
     public partial class ExpenditureType
     {
-        public ExpenditureType()
-        {
-            TenderReport = new HashSet<TenderReport>();
-        }
-
         [Key]
         [StringLength(50)]
         public string Code { get; set; }
@@ -19,7 +14,6 @@ namespace TenderReport.Data.Entities
         [StringLength(100)]
         public string ShortName { get; set; }
         public short? SortOrder { get; set; }
-        public bool IsDeleted { get; set; }
         [Required]
         [StringLength(20)]
         public string CreatedBy { get; set; }
@@ -27,8 +21,5 @@ namespace TenderReport.Data.Entities
         [StringLength(20)]
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-
-        [InverseProperty("ExpenditureTypeNavigation")]
-        public virtual ICollection<TenderReport> TenderReport { get; set; }
     }
 }

@@ -51,18 +51,6 @@ namespace TenderReport.Data.Entities
                 entity.Property(e => e.ExpenditureType).IsUnicode(false);
 
                 entity.Property(e => e.Tendertype).IsUnicode(false);
-
-                entity.HasOne(d => d.ExpenditureTypeNavigation)
-                    .WithMany(p => p.TenderReport)
-                    .HasForeignKey(d => d.ExpenditureType)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TenderReport_ExpenditureType");
-
-                entity.HasOne(d => d.TendertypeNavigation)
-                    .WithMany(p => p.TenderReport)
-                    .HasForeignKey(d => d.Tendertype)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TenderReport_TenderType");
             });
 
             modelBuilder.Entity<TenderType>(entity =>

@@ -25,14 +25,13 @@ namespace TenderReport.Data.Repositories
         public async Task DeleteTenderReport(Guid templateReportId)
         {
             var tenderReportFromDB = await _context.TenderReport.FirstOrDefaultAsync(c => c.TenderReportId == templateReportId);
-            tenderReportFromDB.IsDeleted = true;
-            _context.Entry(tenderReportFromDB).State = EntityState.Modified;
+            _context.Entry(tenderReportFromDB).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<Entities.TenderReport>> GetAllTenderReports(string tenderType)
         {
-            return await _context.TenderReport.Where(c => c.IsDeleted != true && c.Tendertype.Equals(tenderType)).ToListAsync();
+            return await _context.TenderReport.Where(c => c.Tendertype.Equals(tenderType)).ToListAsync();
         }
 
         public async Task<List<TenderType>> GetTende(string tenderType)

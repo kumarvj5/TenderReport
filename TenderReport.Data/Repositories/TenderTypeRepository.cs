@@ -25,14 +25,13 @@ namespace TenderReport.Data.Repositories
         public async Task DeleteTender(string tenderCode)
         {
             var tenderFromDB = await _context.TenderType.FirstOrDefaultAsync(c => c.Code.Equals(tenderCode));
-            tenderFromDB.IsDeleted = true;
-            _context.Entry(tenderFromDB).State = EntityState.Modified;
+            _context.Entry(tenderFromDB).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<TenderType>> GetAllTenders()
         {
-            return await _context.TenderType.Where(c=>c.IsDeleted!= true).ToListAsync();
+            return await _context.TenderType.ToListAsync();
         }
 
         public async Task<bool> TenderExists(string tenderCode)

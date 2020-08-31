@@ -19,7 +19,6 @@ namespace TenderReport.Data.Entities
         [Required]
         [StringLength(50)]
         public string Tendertype { get; set; }
-        public bool IsDeleted { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
         [Required]
@@ -31,12 +30,5 @@ namespace TenderReport.Data.Entities
         public string ModifiedBy { get; set; }
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
-
-        [ForeignKey(nameof(ExpenditureType))]
-        [InverseProperty("TenderReport")]
-        public virtual ExpenditureType ExpenditureTypeNavigation { get; set; }
-        [ForeignKey(nameof(Tendertype))]
-        [InverseProperty(nameof(TenderType.TenderReport))]
-        public virtual TenderType TendertypeNavigation { get; set; }
     }
 }

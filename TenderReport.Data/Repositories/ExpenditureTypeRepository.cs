@@ -25,8 +25,7 @@ namespace TenderReport.Data.Repositories
         public async Task DeleteExpenditure(string ExpenditureCode)
         {
             var ExpenditureFromDB = await _context.ExpenditureType.FirstOrDefaultAsync(c => c.Code.Equals(ExpenditureCode));
-            ExpenditureFromDB.IsDeleted = true;
-            _context.Entry(ExpenditureFromDB).State = EntityState.Modified;
+            _context.Entry(ExpenditureFromDB).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
 
@@ -37,7 +36,7 @@ namespace TenderReport.Data.Repositories
 
         public async Task<List<ExpenditureType>> GetAllExpenditures()
         {
-            return await _context.ExpenditureType.Where(c => c.IsDeleted != true).ToListAsync();
+            return await _context.ExpenditureType.ToListAsync();
         }
 
         public async Task UpdateExpenditure(string ExpenditureCode, ExpenditureType Expenditure)
